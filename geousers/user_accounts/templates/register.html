@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Register</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <div id="map" style="height: 400px;"></div>
+    <input type="hidden" name="latitude" id="latitude" value="">
+    <input type="hidden" name="longitude" id="longitude" value="">
+    <button type="submit">Register</button>
+  </form>
+
+  <script src="https://cdn.jsdelivr.net/npm/elm-pep@1.0.6/dist/elm-pep.js"></script>
+  <script type="module" src="{% static 'register_map.js' %}"></script>
+{% endblock %}

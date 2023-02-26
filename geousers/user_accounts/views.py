@@ -1,14 +1,36 @@
 from django.shortcuts import render
 
 from django.contrib.auth.decorators import login_required
-from django.contrib.gis.geos import Point
 from django.shortcuts import render, redirect
+
 from .models import Account
+from .forms import AccountForm as accountForm
 from django.views.generic import TemplateView
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.forms import UserCreationForm
+from .forms import AccountForm
+from .models import Account
+
 
 
 class HomeView(TemplateView):
     template_name = 'home.html'
+
+def register(request):
+    if request.method == 'POST':
+        user_form = UserCreationForm(request.POST)
+        account_form = AccountForm(request.POST)
+        if user_form.is_valid() and account_form.is_valid():
+            user = user_form.save()
+            account = account_form.save(commit=False)
+            account.user = user
+            account.save()
+            return redirect('login')
+    else:
+        user_form = UserCreationForm()
+        account_form = AccountForm()
+    return render(request, 'register.html', {'user_form': user_form, 'account_form': account_form})
 
 @login_required
 def account(request):
@@ -17,16 +39,15 @@ def account(request):
 
 @login_required
 def edit_account(request):
-    account = Account.objects.get(user=request.user)
+    account = request.user.account
     if request.method == 'POST':
-        account.home_address = request.POST.get('home_address')
-        account.phone_number = request.POST.get('phone_number')
-        lat = request.POST.get('lat')
-        lng = request.POST.get('lng')
-        account.location = Point(float(lng), float(lat))
-        account.save()
-        return redirect('account')
-    return render(request, 'edit_account.html', {'account': account})
+        form = accountForm(request.POST, instance=account)
+        if form.is_valid():
+            form.save()
+            return redirect('account_detail')
+    else:
+        form = accountForm(instance=account)
+    return render(request, 'edit_account.html', {'form': form})
 
 def map(request):
     accounts = Account.objects.all()
