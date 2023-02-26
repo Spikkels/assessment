@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Project{% endblock %}</title>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            {% if user.is_authenticated %}
+              <li><a href="{% url 'account' %}">Account</a></li>
+              <li><a href="{% url 'map' %}">Map</a></li>
+              <li><a href="{% url 'logout' %}">Log out</a></li>
+            {% else %}
+              <li><a href="{% url 'login' %}">Log in</a></li>
+            {% endif %}
+          </ul>
+    </nav>
+    {% block content %}
+    {% endblock %}
+</body>
+</html>

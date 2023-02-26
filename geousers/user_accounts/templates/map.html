@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Map</h1>
+  <div id="map" style="height: 500px;"></div>
+  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script>
+  <script>
+    function initMap() {
+      const map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 4,
+        center: {lat: 39.8283, lng: -98.5795},
+      });
+      {% for account in accounts %}
+      const latLng = new google.maps.LatLng({{ account.location.y }}, {{ account.location.x }});
+      const marker = new google.maps.Marker({
+        position: latLng,
+        map: map,
+      });
+      const infoWindow = new google.maps.InfoWindow({
+        content: '<a href="{% url "account" %}">{{ account.user.username }}</a>',
+      });
+      marker.addListener('click', function() {
+        infoWindow.open(map, marker);
+      });
+      {% endfor %}
+    }
+  </script>
+{% endblock %}
