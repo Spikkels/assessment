@@ -1,56 +1,29 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <title>Map</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol/dist/ol.css" type="text/css">
-  <style>
-    #map {
-      width: 100%;
-      height: 400px;
-    }
-  </style>
-  <script src="https://cdn.jsdelivr.net/npm/ol/dist/ol.js"></script>
-</head>
-<body>
-  <div id="map"></div>
+{% extends 'base.html' %}
+
+{% load static %}
+{% load leaflet_tags %}
+
+{% block content %}
+  <h1>User locations</h1>
+
+  <div id="map" style="height: 100vh;"></div>
+
+  <script src="{% static 'leaflet/leaflet.js' %}"></script>
+  <link rel="stylesheet" href="{% static 'leaflet/leaflet.css' %}">
+
   <script>
-    var map = new ol.Map({
-      target: 'map',
-      layers: [
-        new ol.layer.Tile({
-          source: new ol.source.OSM()
-        })
-      ],
-      view: new ol.View({
-        center: [0, 0],
-        zoom: 2
-      })
-    });
+    var map = L.map('map').setView([0, 0], 2);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
 
     {% for account in accounts %}
-      var userLayer = new ol.layer.Vector({
-        source: new ol.source.Vector({
-          features: []
-        }),
-        style: new ol.style.Style({
-          image: new ol.style.Circle({
-            radius: 5,
-            fill: new ol.style.Fill({
-              color: 'blue'
-            })
-          })
-        })
-      });
+      {% if account.location %}
+        var marker = L.marker([{{ account.location.y }}, {{ account.location.x }}]).addTo(map);
 
-      var userMarker = new ol.Feature({
-        geometry: new ol.geom.Point([{{ account.location.x }}, {{ account.location.y }}])
-      });
-
-      userLayer.getSource().addFeature(userMarker);
-
-      map.addLayer(userLayer);
+        marker.bindPopup("<b>{{ account.user.username }}</b><br>{{ account.home_address }}<br>{{ account.phone_number }}");
+      {% endif %}
     {% endfor %}
   </script>
-</body>
-</html>
+{% endblock %}

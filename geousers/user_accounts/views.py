@@ -26,7 +26,7 @@ def register(request):
             account = account_form.save(commit=False)
             account.user = user
             account.save()
-            return redirect('login')
+            return redirect('/')
     else:
         user_form = UserCreationForm()
         account_form = AccountForm()
@@ -44,7 +44,7 @@ def edit_account(request):
         form = accountForm(request.POST, instance=account)
         if form.is_valid():
             form.save()
-            return redirect('account_detail')
+            return redirect('/')
     else:
         form = accountForm(instance=account)
     return render(request, 'edit_account.html', {'form': form})
