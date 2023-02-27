@@ -1,0 +1,53 @@
+/* base.css */
+
+header {
+    background-color: lightgreen;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    align-items: center;
+  }
+  
+  nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+  }
+  
+  nav li {
+    margin-right: 20px;
+  }
+  
+  nav a {
+    text-decoration: none;
+    color: #333;
+    border-bottom: 1px solid lightgreen;
+    padding: 5px;
+    transition: border-bottom 0.2s ease-in-out;
+  }
+  
+  nav a:hover {
+    border-bottom: 1px solid #333;
+  }
+  
+  nav a.selected {
+    color: white;
+  }
+  
+  nav a.logout {
+    margin-left: auto;
+  }
+  
+  nav a.login,
+  nav a.register {
+    border-bottom: none;
+  }
+  
+  nav a.login:hover,
+  nav a.register:hover {
+    border-bottom: none;
+    text-decoration: underline;
+  }
+  

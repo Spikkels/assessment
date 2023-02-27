@@ -1,13 +1,12 @@
-
-
-
-
 {% extends 'base.html' %}
 
 {% load static %}
 {% load leaflet_tags %}
 
 {% block content %}
+<head>
+  <link rel="stylesheet" href="{% static 'css/forms.css' %}">
+</head>
   <h1>Register</h1>
   <form method="post">
     {% csrf_token %}
@@ -39,31 +38,12 @@
       <label for="location">Location:</label>
       <input type="hidden" id="location" name="location">
     </div>
+    <div id="map" style="width: 100%; height: 400px;"></div>
     <input type="submit" value="Register">
   </form>
 
-  <div id="map" style="width: 100%; height: 400px;"></div>
-
   <script src="{% static 'leaflet/leaflet.js' %}"></script>
   <link rel="stylesheet" href="{% static 'leaflet/leaflet.css' %}">
+  <script src="{% static 'js/register.js' %}"></script>
 
-  <script>
-    var map = L.map('map').setView([51.505, -0.09], 13);
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(map);
-
-    var marker;
-
-    function onMapClick(e) {
-      if (marker) {
-        map.removeLayer(marker);
-      }
-      marker = L.marker(e.latlng).addTo(map);
-      document.getElementById("location").value = "POINT(" + e.latlng.lng + " " + e.latlng.lat + ")";
-    }
-
-    map.on('click', onMapClick);
-  </script>
 {% endblock %}

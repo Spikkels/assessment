@@ -1,21 +1,11 @@
-from django.shortcuts import render
-
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
-
 from .models import Account
+from .forms import AccountForm
+from django.shortcuts import render, redirect
 from .forms import AccountForm as accountForm
 from django.views.generic import TemplateView
-
-from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
-from .forms import AccountForm
-from .models import Account
 
-
-
-class HomeView(TemplateView):
-    template_name = 'home.html'
 
 def register(request):
     if request.method == 'POST':
@@ -32,10 +22,6 @@ def register(request):
         account_form = AccountForm()
     return render(request, 'register.html', {'user_form': user_form, 'account_form': account_form})
 
-@login_required
-def account(request):
-    account = Account.objects.get(user=request.user)
-    return render(request, 'account.html', {'account': account})
 
 @login_required
 def edit_account(request):
@@ -51,4 +37,10 @@ def edit_account(request):
 
 def map(request):
     accounts = Account.objects.all()
-    return render(request, 'map.html', {'accounts': accounts})
+    return render(request, 'home.html', {'accounts': accounts})
+
+@login_required
+def account(request):
+    account = Account.objects.get(user=request.user)
+    return render(request, 'account.html', {'account': account})
+

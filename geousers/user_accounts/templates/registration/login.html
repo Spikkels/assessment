@@ -1,8 +1,14 @@
 {% extends 'base.html' %}
 
+{% load static %}
+{% load leaflet_tags %}
+
 {% block title %}Log in{% endblock %}
 
 {% block content %}
+<head>
+  <link rel="stylesheet" href="{% static 'css/forms.css' %}">
+</head>
   <h1>Log in</h1>
   {% if form.errors %}
     <p>Your username and password didn't match. Please try again.</p>
