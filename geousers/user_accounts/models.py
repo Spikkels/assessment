@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django.contrib.gis.db import models
 
 class Account(models.Model):
+    """Model for user accounts with location information."""
+
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     home_address = models.CharField(max_length=255)
     phone_number = models.CharField(max_length=20)

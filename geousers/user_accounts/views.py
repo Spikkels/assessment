@@ -8,6 +8,8 @@ from django.contrib.auth.forms import UserCreationForm
 
 
 def register(request):
+    """View function for registering new user accounts."""
+
     if request.method == 'POST':
         user_form = UserCreationForm(request.POST)
         account_form = AccountForm(request.POST)
@@ -25,6 +27,8 @@ def register(request):
 
 @login_required
 def edit_account(request):
+    """View function for editing user account information."""
+    
     account = request.user.account
     if request.method == 'POST':
         form = accountForm(request.POST, instance=account)
@@ -36,11 +40,15 @@ def edit_account(request):
     return render(request, 'edit_account.html', {'form': form})
 
 def map(request):
+    """View function for displaying all user locations on a map."""
+    
     accounts = Account.objects.all()
     return render(request, 'home.html', {'accounts': accounts})
 
 @login_required
 def account(request):
+    """View function for displaying the user's account information."""
+    
     account = Account.objects.get(user=request.user)
     return render(request, 'account.html', {'account': account})
 
