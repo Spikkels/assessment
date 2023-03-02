@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  django:
+    build: .
+    container_name: geo-django-users
+    command: >
+      sh -c "python manage.py makemigrations user_accounts &&
+             python manage.py migrate &&
+             echo \"from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@example.com', 'ChangeMe')\" | python manage.py shell &&
+             python manage.py runserver 0.0.0.0:8000"
+    volumes: 
+      - .:/usr/src/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - pgdb
+
+  pgdb:
+    image: kartoza/postgis:15-3
+    container_name: kartoza-postgis
+    environment:
+      - POSTGRES_USER=user001
+      - POSTGRES_PASS=123456789
+      - POSTGRES_DBNAME=gis
+    ports:
+      - "5432:5432"
+    restart: always
+
