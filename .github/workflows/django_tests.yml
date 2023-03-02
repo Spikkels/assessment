@@ -27,8 +27,12 @@ jobs:
 
     - name: Install dependencies
       run: |
-        apt-get update
-        apt-get install -y binutils libproj-dev gdal-bin
+        sudo apt-get update
+        sudo apt-get install -y --no-install-recommends \
+          binutils \
+          libproj-dev \
+          gdal-bin \
+        && sudo rm -rf /var/lib/apt/lists/*
         pip install -r requirements.txt
       
     - name: Migrate database
