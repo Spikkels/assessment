@@ -82,7 +82,7 @@ DATABASES = {
         'NAME': 'gis',
         'USER': 'user001',
         'PASSWORD': '123456789',
-        'HOST': 'pgdb',
+        'HOST': '127.0.0.1',
         'PORT': '5432'
     }
 }
