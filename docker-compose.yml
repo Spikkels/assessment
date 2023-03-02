@@ -10,6 +10,8 @@ services:
       - POSTGRES_DBNAME=gis
     ports:
       - "5432:5432"
+    networks:
+      - my_network
 
   django:
     build: .
@@ -24,4 +26,11 @@ services:
       - "8000:8000"
     depends_on:
       - pgdb
+    env_file:
+      - .env
+    networks:
+      - my_network
 
+networks:
+  my_network:
+    driver: bridge
