@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -82,7 +83,7 @@ DATABASES = {
         'NAME': 'gis',
         'USER': 'user001',
         'PASSWORD': '123456789',
-        'HOST': '127.0.0.1',
+        'HOST': os.environ.get('POSTGRES_HOST', 'localhost'),
         'PORT': '5432'
     }
 }
